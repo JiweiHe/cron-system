@@ -18,12 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class LoginController {
     private static final String FIXED_PASSWORD = "123456";//FIXME
 
-    @Autowired
-    private LoginService loginService;
-
     @PostMapping("login")
     public String login(@RequestParam String username, @RequestParam String password, HttpServletRequest request) {
-        if (username.equals("jiuhuar") && FIXED_PASSWORD.equals(password)) {
+        if (username.equals("dev") && FIXED_PASSWORD.equals(password)) {
             HttpSession session = request.getSession();
             session.setAttribute("user", true);
             return "redirect:/jobDetail/list";
