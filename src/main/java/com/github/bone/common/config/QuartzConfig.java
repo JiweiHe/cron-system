@@ -16,10 +16,12 @@ import com.github.bone.common.job.MethodExecutingJobDetailFactoryBean;
 @Configuration
 public class QuartzConfig {
 
+    private static final String SCHEDULER_GROUP_NAME = "CRON_GROUP";
+
     @Bean
     public SchedulerFactoryBean schedulerFactoryBean(DataSource dataSource, TaskExecutor taskExecutor, JobDetail... jobDetails) throws SchedulerException {
         SchedulerFactoryBean quartzScheduler = new SchedulerFactoryBean();
-        quartzScheduler.setConfigLocation(new ClassPathResource(""));
+        quartzScheduler.setConfigLocation(new ClassPathResource("quartz.properties"));
         quartzScheduler.setSchedulerName("scheduler");
         quartzScheduler.setApplicationContextSchedulerContextKey("applicationContext");
         quartzScheduler.setDataSource(dataSource);
@@ -30,7 +32,7 @@ public class QuartzConfig {
 
     @Bean(name = "executeJob")
     public MethodExecutingJobDetailFactoryBean beerProRatingConvert() {
-        return jobDetailFactoryBean("jobService", "jobMethod", "cron");
+        return jobDetailFactoryBean("jobService", "jobMethod", SCHEDULER_GROUP_NAME);
     }
 
     private MethodExecutingJobDetailFactoryBean jobDetailFactoryBean(String beanName, String methodName, String groupName) {
